@@ -4,6 +4,7 @@ import { observer, inject } from "mobx-react"
 import { Store } from "../Store"
 import { TransferLog } from "./TransferLog"
 import { MintForm } from "./MintForm"
+import { UserForm } from "./UserForm"
 import { TxRecord } from "./TxRecord"
 
 const css = {
@@ -16,28 +17,42 @@ const css = {
 export class App extends React.Component<{ store?: Store }, {}> {
   public render() {
     const {
-      totalSupply,
+      contractBalance,
       transferEvents,
       txRecords,
+      numberOfUsers
     } = this.props.store!
 
     return (
+
       <div>
         <section className="section">
           <div className="has-text-centered">
             <h1>
-              <span className="is-size-2"> {totalSupply} </span>
+              <span className="is-size-2"> {contractBalance} </span>
               <br />
-              Total Supply
+              Contract Balance
+            </h1>
+          </div>
+
+          <div>
+            <h1>
+              <span className="is-size-2"> {numberOfUsers} </span>
+              <br />
+              No of users
             </h1>
           </div>
 
           <div className="container content">
             <MintForm />
           </div>
+          <div className="container content">
+            <UserForm />
+          </div>
         </section>
 
         <section className="section">
+
           <div className="container content">
             <h1> Transaction Records </h1>
             {txRecords.length === 0 && "no transaction made"}

@@ -2,18 +2,18 @@ import * as React from "react"
 import { inject, observer } from "mobx-react"
 import * as cx from "classnames"
 
-import { MintFormState } from "./MintFormState"
+import { UserFormState } from "./UserFormState"
 import { Store } from "../Store"
 
 @inject("store") @observer
-export class MintForm extends React.Component<{ store?: Store }, {}> {
-  public data = new MintFormState(this.props.store!)
+export class UserForm extends React.Component<{ store?: Store }, {}> {
+  public data = new UserFormState(this.props.store!)
 
   public render() {
     const {
-      gName,
+      userAddress,
       userName,
-      onSubmit,
+      onSubmitNewUser,
     } = this.data
 
     const {
@@ -23,14 +23,14 @@ export class MintForm extends React.Component<{ store?: Store }, {}> {
     return (
       <div>
         <div className="field">
-          <label className="label">Group Name</label>
+          <label className="label">User Address</label>
           <div className="control">
-            <input className={cx("input", { "is-danger": gName.hasError })} type="text" placeholder="Trip to Bali"
-              onChange={(e) => gName.onChange(e.target.value)}
+              <input className={cx("input", { "is-danger": userAddress.hasError })} type="text" placeholder="0xabc...abc"
+              onChange={(e) => userAddress.onChange(e.target.value)}
             />
           </div>
-          {gName.hasError &&
-            <p className="help is-danger">{gName.error}</p>
+          {userAddress.hasError &&
+            <p className="help is-danger">{userAddress.error}</p>
           }
         </div>
 
@@ -48,8 +48,8 @@ export class MintForm extends React.Component<{ store?: Store }, {}> {
 
         <div className="field is-grouped">
           <div className="control">
-            <button className="button is-link" onClick={onSubmit}>
-              Create new group
+            <button className="button is-link" onClick={onSubmitNewUser}>
+              Add user
             </button>
           </div>
           {/* <div className="control">

@@ -7,7 +7,7 @@
 
 		// Constructor 
 		// Create a new contract 
-		constructor (string gName , string userName) public {
+		function createContract(string gName , string userName) public {
 
 			groupName = gName;
 			addUser(userName, msg.sender);
