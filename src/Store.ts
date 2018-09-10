@@ -104,6 +104,41 @@ export class Store {
     }
   }
 
+  public async makePayment(paymentTitle: string, paymentAmount: string, paymentAddress: string, paymentPayees: string, paymentNotes: string) {
+
+    this.txRecords.unshift({
+      method: "makePayment",
+      params: {
+        paymentTitle,
+        paymentAmount,
+        paymentAddress,
+        paymentPayees,
+        paymentNotes,
+      },
+      tx: undefined,
+      error: undefined,
+    })
+
+    // getting the observable txRecords back, so when we update `tx`, it will
+    // trigger observers.
+    const txRecord = this.txRecords[0]
+
+
+
+    try {
+      const tx = await myToken.send("makePayment", [paymentTitle, paymentAmount, paymentAddress, paymentPayees.split(","), paymentNotes])
+      console.log(paymentTitle, paymentAmount, paymentAddress, paymentPayees.split(","), paymentNotes)
+      txRecord.tx = tx
+
+      await tx.confirm(3, (tx2) => {
+        // update transaction info
+        txRecord.tx = tx2
+      })
+    } catch (err) {
+      txRecord.error = err
+    }
+  }
+
 
 public async addUser(userName: string, userAddress: string) {
     // txRecords is an observable array. Adding an object into the array
