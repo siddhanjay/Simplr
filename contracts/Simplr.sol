@@ -70,7 +70,6 @@
 			require (msg.sender == users[msg.sender].addr);
 
 			users[msg.sender].balance += msg.value;
-			// address(this).transfer()
 			contractBalance+=msg.value;
 
 		}
@@ -180,6 +179,10 @@
 
 		function getContractBalance () public onlyUser() view returns(uint) {
 			return address(this).balance;
+		}
+
+		function getUserName () public onlyUser() view returns(string)  {
+			return users[msg.sender].name;
 		}
 
 		modifier onlyUser() { 

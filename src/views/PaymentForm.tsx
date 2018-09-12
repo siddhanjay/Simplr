@@ -46,11 +46,10 @@ export class PaymentForm extends React.Component<{ store?: Store }, {}> {
             });
             
         }
-    
     }
 
   public render() {
-    const {
+     const {
       paymentTitle,
       paymentAmount,
       paymentAddress,
@@ -58,6 +57,8 @@ export class PaymentForm extends React.Component<{ store?: Store }, {}> {
       paymentNotes,
       onSubmit,
     } = this.data
+
+    //paymentPayees=this.state.optionsChecked
 
     const {
       hasError,
@@ -119,13 +120,17 @@ export class PaymentForm extends React.Component<{ store?: Store }, {}> {
           }
         </div>
         <div>
-              <div>
-                  {outputCheckboxes}
+        <div>
+              
+            {outputCheckboxes}
               </div>
               <div>
                   {JSON.stringify(this.state.optionsChecked)}
               </div>
             </div>
+        
+        
+        
 
         <div className="field">
           <label className="label">Payment Notes</label>

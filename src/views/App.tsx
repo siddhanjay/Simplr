@@ -21,7 +21,9 @@ export class App extends React.Component<{ store?: Store }, {}> {
       contractBalance,
       transferEvents,
       txRecords,
-      numberOfUsers
+      numberOfUsers,
+      userName,
+      groupName
     } = this.props.store!
 
     return (
@@ -43,6 +45,21 @@ export class App extends React.Component<{ store?: Store }, {}> {
               No of users
             </h1>
           </div>
+
+            <div>
+            <h1>
+              Welcome 
+              <span > {userName} </span>
+            </h1>
+          </div>
+
+           <div>
+            <h1>
+              Group Name 
+              <span > {groupName} </span>
+            </h1>
+          </div>
+
 
           <div className="container content">
             <MintForm />

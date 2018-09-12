@@ -14,6 +14,10 @@ export class Store {
 
   @observable public numberOfUsers: number = 0
 
+  @observable public userName: string = "new User"
+
+  @observable public groupName: string = "newGroup"
+
   @observable.shallow public transferEvents: ITransferLog[] = []
 
   @observable public txRecords: ITxRecord[] = []
@@ -23,6 +27,8 @@ export class Store {
   public init() {
     this.updateTotalSupply()
     this.getNumberOfUsers()
+    this.getUserName()
+    this.getGroupName()
     this.observeEvents()
     
   }
@@ -37,10 +43,23 @@ export class Store {
 
   public async getNumberOfUsers() {
 
-    console.log("Inside method")
     const result = await myToken.call("getNumberOfUsers")
     const supply = result.outputs[0]
     this.numberOfUsers = supply.toNumber()
+  }
+
+  public async getGroupName() {
+
+    const result = await myToken.call("groupName")
+    const supply = result.outputs[0]
+    this.groupName = supply.toString()
+  }
+
+  public async getUserName() {
+
+    const result = await myToken.call("getUserName")
+    const supply = result.outputs[0]
+    this.userName = supply.toString()
   }
 
   public async mintTokens(toAddress: string, amount: number) {
@@ -127,7 +146,7 @@ export class Store {
 
     try {
       const tx = await myToken.send("makePayment", [paymentTitle, paymentAmount, paymentAddress, paymentPayees.split(","), paymentNotes])
-      console.log(paymentTitle, paymentAmount, paymentAddress, paymentPayees.split(","), paymentNotes)
+      console.log(paymentTitle, paymentAmount, paymentAddress, paymentPayees, paymentNotes)
       txRecord.tx = tx
 
       await tx.confirm(3, (tx2) => {
