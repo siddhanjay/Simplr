@@ -146,7 +146,7 @@ export class Store {
 
     try {
       const tx = await myToken.send("makePayment", [paymentTitle, paymentAmount, paymentAddress, paymentPayees.split(","), paymentNotes])
-      console.log(paymentTitle, paymentAmount, paymentAddress, paymentPayees.split(","), paymentNotes)
+      console.log(paymentTitle, paymentAmount, paymentAddress, paymentPayees, paymentNotes)
       txRecord.tx = tx
 
       await tx.confirm(3, (tx2) => {
