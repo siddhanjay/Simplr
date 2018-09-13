@@ -7,6 +7,8 @@ import { MintForm } from "./MintForm"
 import { UserForm } from "./UserForm"
 import { TxRecord } from "./TxRecord"
 import { PaymentForm } from "./PaymentForm"
+import { FundForm } from "./FundForm"
+
 
 const css = {
   button: {
@@ -69,6 +71,9 @@ export class App extends React.Component<{ store?: Store }, {}> {
           </div>
           <div className="container content">
             <PaymentForm />
+          </div>
+          <div className="container content">
+            <FundForm/>
           </div>
         </section>
 

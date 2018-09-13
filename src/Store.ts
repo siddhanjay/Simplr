@@ -62,6 +62,35 @@ export class Store {
     this.userName = supply.toString()
   }
 
+
+ public async fundContract(fundAmount: string) {
+    // txRecords is an observable array. Adding an object into the array
+    // will recursively convert the object into an observable.
+    this.txRecords.unshift({
+      method: "fundContract",
+      params: {
+        fundAmount,
+      },
+      tx: undefined,
+      error: undefined,
+    })
+
+    // getting the observable txRecords back, so when we update `tx`, it will
+    // trigger observers.
+    const txRecord = this.txRecords[0]
+
+    try {
+      const tx = await myToken.send("fundContract", [] ,{amount : fundAmount})
+      txRecord.tx = tx
+
+      await tx.confirm(3, (tx2) => {
+        // update transaction info
+        txRecord.tx = tx2
+      })
+    } catch (err) {
+      txRecord.error = err
+    }
+  }
   public async mintTokens(toAddress: string, amount: number) {
     // txRecords is an observable array. Adding an object into the array
     // will recursively convert the object into an observable.

@@ -5,48 +5,48 @@ import * as cx from "classnames"
 import { PaymentFormState } from "./PaymentFormState"
 import { Store } from "../Store"
 
-class CheckBox extends React.Component<{ store?: Store }, {}> {
+// class CheckBox extends React.Component<{ store?: Store }, {}> {
     
-    render() {
-        return (
-          <input type="checkbox" id={this.props.id} value={this.props.value} onChange={this.props.onChange} />
-        )
-    }
+//     render() {
+//         return (
+//           <input type="checkbox" id={this.props.id} value={this.props.value} onChange={this.props.onChange} />
+//         )
+//     }
     
-}
+// }
 
 @inject("store") @observer
 export class PaymentForm extends React.Component<{ store?: Store }, {}> {
   public data = new PaymentFormState(this.props.store!)
-
-  constructor(props) {
-        super(props);
-        this.state= { optionsChecked: [] }
-    }
+  // constructor(props) {
+  //       super(props);
+  //       this.state= { optionsChecked: [] }
+  //   }
     
-    changeEvent(event) {
+  //   changeEvent(event) {
     
-      let checkedArray = this.state.optionsChecked;
-      let selectedValue = event.target.value;
+  //     let checkedArray = this.state.optionsChecked;
+  //     let selectedValue = event.target.value;
         
-        if (event.target.checked === true) {
+  //       if (event.target.checked === true) {
         
-          checkedArray.push(selectedValue);
-            this.setState({
-              optionsChecked: checkedArray
-            });
+  //         checkedArray.push(selectedValue);
+  //           this.setState({
+  //             optionsChecked: checkedArray
+  //           });
                         
-        } else {
+  //       } else {
         
-          let valueIndex = checkedArray.indexOf(selectedValue);
-      checkedArray.splice(valueIndex, 1);
+  //         let valueIndex = checkedArray.indexOf(selectedValue);
+  //     checkedArray.splice(valueIndex, 1);
             
-            this.setState({
-              optionsChecked: checkedArray
-            });
+  //           this.setState({
+  //             optionsChecked: checkedArray
+  //           });
             
-        }
-    }
+  //       }
+  //   }
+
 
   public render() {
      const {
@@ -64,11 +64,11 @@ export class PaymentForm extends React.Component<{ store?: Store }, {}> {
       hasError,
     } = this.data.form
 
-    let checkBoxArray = ['lorem','ipsum','dolor'];
+    // let checkBoxArray = ['lorem','ipsum','dolor'];
        
-        let outputCheckboxes = checkBoxArray.map(function(string, i){
-          return (<div><CheckBox value={string} id={'string_' + i} onChange={this.changeEvent.bind(this)} /><label htmlFor={'string_' + i}>{string}</label></div>)
-        }, this);
+    //     let outputCheckboxes = checkBoxArray.map(function(string, i){
+    //       return (<div><CheckBox value={string} id={'string_' + i} onChange={this.changeEvent.bind(this)} /><label htmlFor={'string_' + i}>{string}</label></div>)
+    //     }, this);
 
     return (
       <div>
@@ -119,7 +119,7 @@ export class PaymentForm extends React.Component<{ store?: Store }, {}> {
             <p className="help is-danger">{paymentPayees.error}</p>
           }
         </div>
-        <div>
+       {/* <div>
         <div>
               
             {outputCheckboxes}
@@ -127,7 +127,7 @@ export class PaymentForm extends React.Component<{ store?: Store }, {}> {
               <div>
                   {JSON.stringify(this.state.optionsChecked)}
               </div>
-            </div>
+            </div>*/}
         
         
         
