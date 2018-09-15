@@ -396,7 +396,7 @@ const result =  myToken.call("getContractBalance");
                   </Dropdown>
                 </ButtonGroup>
                 <div className="text-value" id ="userAddress">{this.getUserAddress()}</div>
-                <div>Wallet Address</div>
+                <div className="wrap">Wallet Address</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
               </div>
@@ -482,7 +482,7 @@ const result =  myToken.call("getContractBalance");
                       </div>
                     </td>
                     <td className="text-center">
-                      <i className="flag-icon flag-icon-us h4 mb-0" title="us" id="us"></i>
+                      <i className="flag-icon flag-icon-sg h4 mb-0" title="us" id="us"></i>
                     </td>
                     <td>
                       <div className="clearfix">
@@ -512,7 +512,7 @@ const result =  myToken.call("getContractBalance");
                       </div>
                     </td>
                     <td className="text-center">
-                      <i className="flag-icon flag-icon-br h4 mb-0" title="br" id="br"></i>
+                      <i className="flag-icon flag-icon-sg h4 mb-0" title="br" id="br"></i>
                     </td>
                     <td>
                       <div className="clearfix">
@@ -538,15 +538,15 @@ const result =  myToken.call("getContractBalance");
                       <div>Vitalik Buterin</div>
                     </td>
                     <td className="text-center">
-                      <i className="flag-icon flag-icon-in h4 mb-0" title="in" id="in"></i>
+                      <i className="flag-icon flag-icon-ch h4 mb-0" title="in" id="in"></i>
                     </td>
                     <td>
                       <div className="clearfix">
                         <div className="float-left">
-                          <strong>74%</strong>
+                          <strong>34%</strong>
                         </div>
                       </div>
-                      <Progress className="progress-xs" color="warning" value="74" />
+                      <Progress className="progress-xs" color="warning" value="34" />
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
@@ -567,15 +567,15 @@ const result =  myToken.call("getContractBalance");
                       </div>
                     </td>
                     <td className="text-center">
-                      <i className="flag-icon flag-icon-es h4 mb-0" title="es" id="es"></i>
+                      <i className="flag-icon flag-icon-jp h4 mb-0" title="es" id="es"></i>
                     </td>
                     <td>
                       <div className="clearfix">
                         <div className="float-left">
-                          <strong>22%</strong>
+                          <strong>6%</strong>
                         </div>
                       </div>
-                      <Progress className="progress-xs" color="info" value="22" />
+                      <Progress className="progress-xs" color="info" value="6" />
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
