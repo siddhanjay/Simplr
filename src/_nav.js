@@ -151,7 +151,7 @@ export default {
       ],
     },
     {
-      name: 'Charts',
+      name: 'Data Insights',
       url: '/charts',
       icon: 'icon-pie-chart',
     },

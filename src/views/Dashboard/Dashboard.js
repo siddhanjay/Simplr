@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
 import { Qtum, QtumRPC, Contract } from "qtumjs"
 // import { ITransferLog, ITxRecord } from "../../types"
 // import { TxRecord } from "../../../views/TxRecord"
-
+import { Bar, Doughnut, Line, Pie, Polar, Radar } from 'react-chartjs-2';
 
 import {
   Badge,
@@ -17,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
   Col,
+  CardColumns,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -36,201 +36,6 @@ const brandWarning = getStyle('--warning')
 const brandDanger = getStyle('--danger')
 const qtum = new Qtum("http://localhost:9888", require("../../solar.development.json"))
 const myToken = qtum.contract("Simplr.sol")
-
-// Card Chart 1
-const cardChartData1 = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: brandPrimary,
-      borderColor: 'rgba(255,255,255,.55)',
-      data: [65, 59, 84, 84, 51, 55, 40],
-    },
-  ],
-};
-
-const cardChartOpts1 = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent',
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        },
-
-      }],
-    yAxes: [
-      {
-        display: false,
-        ticks: {
-          display: false,
-          min: Math.min.apply(Math, cardChartData1.datasets[0].data) - 5,
-          max: Math.max.apply(Math, cardChartData1.datasets[0].data) + 5,
-        },
-      }],
-  },
-  elements: {
-    line: {
-      borderWidth: 1,
-    },
-    point: {
-      radius: 4,
-      hitRadius: 10,
-      hoverRadius: 4,
-    },
-  }
-}
-
-
-// Card Chart 2
-const cardChartData2 = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: brandInfo,
-      borderColor: 'rgba(255,255,255,.55)',
-      data: [1, 18, 9, 17, 34, 22, 11],
-    },
-  ],
-};
-
-const cardChartOpts2 = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent',
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        },
-
-      }],
-    yAxes: [
-      {
-        display: false,
-        ticks: {
-          display: false,
-          min: Math.min.apply(Math, cardChartData2.datasets[0].data) - 5,
-          max: Math.max.apply(Math, cardChartData2.datasets[0].data) + 5,
-        },
-      }],
-  },
-  elements: {
-    line: {
-      tension: 0.00001,
-      borderWidth: 1,
-    },
-    point: {
-      radius: 4,
-      hitRadius: 10,
-      hoverRadius: 4,
-    },
-  },
-};
-
-// Card Chart 3
-const cardChartData3 = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
-      data: [78, 81, 80, 45, 34, 12, 40],
-    },
-  ],
-};
-
-const cardChartOpts3 = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        display: false,
-      }],
-    yAxes: [
-      {
-        display: false,
-      }],
-  },
-  elements: {
-    line: {
-      borderWidth: 2,
-    },
-    point: {
-      radius: 0,
-      hitRadius: 10,
-      hoverRadius: 4,
-    },
-  },
-};
-
-// Card Chart 4
-const cardChartData4 = {
-  labels: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
-  datasets: [
-    {
-      label: 'My First dataset',
-      backgroundColor: 'rgba(255,255,255,.3)',
-      borderColor: 'transparent',
-      data: [78, 81, 80, 45, 34, 12, 40, 75, 34, 89, 32, 68, 54, 72, 18, 98],
-    },
-  ],
-};
-
-const cardChartOpts4 = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        display: false,
-        barPercentage: 0.6,
-      }],
-    yAxes: [
-      {
-        display: false,
-      }],
-  },
-};
 
 // Social Box Chart
 const socialBoxData = [
@@ -486,18 +291,18 @@ class Dashboard extends Component {
     });
   }
   
-   getNumberOfUsers() {
-    const result =  myToken.call("getNumberOfUsers");
-   var promise = Promise.resolve(result);
-    promise.then(function(value) {
+  //  getNumberOfUsers() {
+  //   const result =  myToken.call("getNumberOfUsers");
+  //  var promise = Promise.resolve(result);
+  //   promise.then(function(value) {
      
-      const supply = value.outputs[0];
+  //     const supply = value.outputs[0];
      
-      document.getElementById("userNo").innerHTML = supply.toNumber();
-      // return  supply.toNumber();
-    })
+  //     document.getElementById("userNo").innerHTML = supply.toNumber();
+  //     // return  supply.toNumber();
+  //   })
     
-  }
+  // }
 
   getUserName() {
     const result =  myToken.call("getUserName");
@@ -511,6 +316,40 @@ class Dashboard extends Component {
     
   }
 
+  getUserAddress() {
+    const result =  myToken.call("getUserAddress");
+   var promise = Promise.resolve(result);
+    promise.then(function(value) {
+     
+      const supply = value.outputs[0];
+     
+      document.getElementById("userAddress").innerHTML = supply.toString();
+    })
+    
+  }
+  getUserBalance() {
+    const result =  myToken.call("getUserBalance");
+   var promise = Promise.resolve(result);
+    promise.then(function(value) {
+     
+      const supply = value.outputs[0];
+     
+      document.getElementById("userBalance").innerHTML = supply.toString();
+    })
+    
+  }
+
+getContractBalance() {
+
+const result =  myToken.call("getContractBalance");
+   var promise = Promise.resolve(result);
+    promise.then(function(value) {
+     
+      const supply = value.outputs[0];
+     
+      document.getElementById("contractBalance").innerHTML = supply.toString();
+    })
+}
    render() {
 
     return (
@@ -533,8 +372,8 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value" id="userNo">{this.getNumberOfUsers()}</div>
-                <div>Users in Group</div>
+                <div className="text-value" id="userName">{this.getUserName()}</div>
+                <div>Welcome Back</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
               </div>
@@ -556,8 +395,8 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value" id ="userName">{this.getUserName()}</div>
-                <div>Welcome Back</div>
+                <div className="text-value" id ="userAddress">{this.getUserAddress()}</div>
+                <div>Wallet Address</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
               </div>
@@ -579,11 +418,10 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </Dropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
+                <div className="text-value" id ="userBalance">{this.getUserBalance()}</div>
+                <div>You are owed</div>
               </CardBody>
               <div className="chart-wrapper" style={{ height: '70px' }}>
-                <Line data={cardChartData3} options={cardChartOpts3} height={70} />
               </div>
             </Card>
           </Col>
@@ -603,11 +441,10 @@ class Dashboard extends Component {
                     </DropdownMenu>
                   </ButtonDropdown>
                 </ButtonGroup>
-                <div className="text-value">9.823</div>
-                <div>Members online</div>
+                <div className="text-value" id="contractBalance">{this.getContractBalance()}</div>
+                <div>Contract Balance</div>
               </CardBody>
               <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
-                <Bar data={cardChartData4} options={cardChartOpts4} height={70} />
               </div>
             </Card>
           </Col>
@@ -615,65 +452,8 @@ class Dashboard extends Component {
         <Row>
           <Col>
             <Card>
-              <CardBody>
-                <Row>
-                  <Col sm="5">
-                    <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
-                  </Col>
-                  <Col sm="7" className="d-none d-sm-inline-block">
-                    <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>
-                    <ButtonToolbar className="float-right" aria-label="Toolbar with button groups">
-                      <ButtonGroup className="mr-3" aria-label="First group">
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(1)} active={this.state.radioSelected === 1}>Day</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(2)} active={this.state.radioSelected === 2}>Month</Button>
-                        <Button color="outline-secondary" onClick={() => this.onRadioBtnClick(3)} active={this.state.radioSelected === 3}>Year</Button>
-                      </ButtonGroup>
-                    </ButtonToolbar>
-                  </Col>
-                </Row>
-                <div className="chart-wrapper" style={{ height: 300 + 'px', marginTop: 40 + 'px' }}>
-                  <Line data={mainChart} options={mainChartOpts} height={300} />
-                </div>
-              </CardBody>
-              <CardFooter>
-                <Row className="text-center">
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Visits</div>
-                    <strong>29.703 Users (40%)</strong>
-                    <Progress className="progress-xs mt-2" color="success" value="40" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Unique</div>
-                    <strong>24.093 Users (20%)</strong>
-                    <Progress className="progress-xs mt-2" color="info" value="20" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Pageviews</div>
-                    <strong>78.706 Views (60%)</strong>
-                    <Progress className="progress-xs mt-2" color="warning" value="60" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">New Users</div>
-                    <strong>22.123 Users (80%)</strong>
-                    <Progress className="progress-xs mt-2" color="danger" value="80" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Bounce Rate</div>
-                    <strong>Average Rate (40.15%)</strong>
-                    <Progress className="progress-xs mt-2" color="primary" value="40" />
-                  </Col>
-                </Row>
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Card>
               <CardHeader>
-                Traffic {' & '} Sales
+                Friends {' & '} Activity
               </CardHeader>
               <CardBody>
                 <br />
@@ -683,8 +463,7 @@ class Dashboard extends Component {
                     <th className="text-center"><i className="icon-people"></i></th>
                     <th>User</th>
                     <th className="text-center">Country</th>
-                    <th>Usage</th>
-                    <th className="text-center">Payment Method</th>
+                    <th>Fund Contract</th>
                     <th>Activity</th>
                   </tr>
                   </thead>
@@ -697,9 +476,9 @@ class Dashboard extends Component {
                       </div>
                     </td>
                     <td>
-                      <div>Yiorgos Avraamu</div>
+                      <div>Siddhanjay Godre</div>
                       <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
+                        <span>New</span> | Registered: Sept 1, 2018
                       </div>
                     </td>
                     <td className="text-center">
@@ -710,14 +489,8 @@ class Dashboard extends Component {
                         <div className="float-left">
                           <strong>50%</strong>
                         </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
                       </div>
                       <Progress className="progress-xs" color="success" value="50" />
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-mastercard" style={{ fontSize: 24 + 'px' }}></i>
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
@@ -732,10 +505,10 @@ class Dashboard extends Component {
                       </div>
                     </td>
                     <td>
-                      <div>Avram Tarasios</div>
+                      <div>Niharika Gupta</div>
                       <div className="small text-muted">
 
-                        <span>Recurring</span> | Registered: Jan 1, 2015
+                        <span>Recurring</span> | Registered: Sept 14, 2018
                       </div>
                     </td>
                     <td className="text-center">
@@ -746,14 +519,8 @@ class Dashboard extends Component {
                         <div className="float-left">
                           <strong>10%</strong>
                         </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
                       </div>
                       <Progress className="progress-xs" color="info" value="10" />
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-visa" style={{ fontSize: 24 + 'px' }}></i>
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
@@ -768,10 +535,7 @@ class Dashboard extends Component {
                       </div>
                     </td>
                     <td>
-                      <div>Quintin Ed</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
+                      <div>Vitalik Buterin</div>
                     </td>
                     <td className="text-center">
                       <i className="flag-icon flag-icon-in h4 mb-0" title="in" id="in"></i>
@@ -781,14 +545,8 @@ class Dashboard extends Component {
                         <div className="float-left">
                           <strong>74%</strong>
                         </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
                       </div>
                       <Progress className="progress-xs" color="warning" value="74" />
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-stripe" style={{ fontSize: 24 + 'px' }}></i>
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
@@ -799,48 +557,13 @@ class Dashboard extends Component {
                     <td className="text-center">
                       <div className="avatar">
                         <img src={'assets/img/avatars/4.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
-                        <span className="avatar-status badge-secondary"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Enéas Kwadwo</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <i className="flag-icon flag-icon-fr h4 mb-0" title="fr" id="fr"></i>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>98%</strong>
-                        </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="danger" value="98" />
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-paypal" style={{ fontSize: 24 + 'px' }}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>Last month</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'assets/img/avatars/5.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
                         <span className="avatar-status badge-success"></span>
                       </div>
                     </td>
                     <td>
-                      <div>Agapetus Tadeáš</div>
+                      <div>Satoshi Nakamoto</div>
                       <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
+                        <span>New</span> | Registered: August 1, 2018
                       </div>
                     </td>
                     <td className="text-center">
@@ -851,53 +574,12 @@ class Dashboard extends Component {
                         <div className="float-left">
                           <strong>22%</strong>
                         </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
                       </div>
                       <Progress className="progress-xs" color="info" value="22" />
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-google-wallet" style={{ fontSize: 24 + 'px' }}></i>
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
                       <strong>Last week</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
-                        <span className="avatar-status badge-danger"></span>
-                      </div>
-                    </td>
-                    <td>
-                      <div>Friderik Dávid</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: Jan 1, 2015
-                      </div>
-                    </td>
-                    <td className="text-center">
-                      <i className="flag-icon flag-icon-pl h4 mb-0" title="pl" id="pl"></i>
-                    </td>
-                    <td>
-                      <div className="clearfix">
-                        <div className="float-left">
-                          <strong>43%</strong>
-                        </div>
-                        <div className="float-right">
-                          <small className="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
-                        </div>
-                      </div>
-                      <Progress className="progress-xs" color="success" value="43" />
-                    </td>
-                    <td className="text-center">
-                      <i className="fa fa-cc-amex" style={{ fontSize: 24 + 'px' }}></i>
-                    </td>
-                    <td>
-                      <div className="small text-muted">Last login</div>
-                      <strong>Yesterday</strong>
                     </td>
                   </tr>
                   </tbody>
