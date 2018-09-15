@@ -515,6 +515,7 @@ class Dashboard extends Component {
 
     return (
       <div className="animated fadeIn">
+    
         <Row>
           <Col xs="12" sm="6" lg="3">
             <Card className="text-white bg-info">

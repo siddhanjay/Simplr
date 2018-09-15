@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Qtum, QtumRPC, Contract } from "qtumjs"
 import {
   Badge,
   Button,
@@ -23,7 +24,11 @@ import {
   InputGroupText,
   Label,
   Row,
+  Alert,
 } from 'reactstrap';
+
+const qtum = new Qtum("http://localhost:9888", require("../../../solar.development.json"))
+const myToken = qtum.contract("Simplr.sol")
 
 class Forms extends Component {
   constructor(props) {
@@ -31,10 +36,12 @@ class Forms extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.toggleFade = this.toggleFade.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
     this.state = {
       collapse: true,
       fadeIn: true,
-      timeout: 300
+      timeout: 300,
+      visible: true
     };
   }
 
@@ -46,121 +53,43 @@ class Forms extends Component {
     this.setState((prevState) => { return { fadeIn: !prevState }});
   }
 
+  createContract() {
+    var gName = document.getElementById('exampleInputName2').value;
+    var userName = document.getElementById('exampleInputEmail2').value;
+    const result =  myToken.send("createContract", [gName, userName]);
+   var promise = Promise.resolve(result);
+    promise.then(function(value) {
+      document.getElementById("successToastr").classList.remove("hidden");
+    })
+  }
+
+  addUser() {
+    var userName = document.getElementById('addUserName').value;
+    var userAddress = document.getElementById('addUserAddress').value;
+    const result = myToken.send("addUser", [userName, userAddress]);
+    var promise = Promise.resolve(result);
+    promise.then(function(value) {
+      document.getElementById("successToastr").classList.remove("hidden");
+    })
+  }
+
+   ishex160(s) {
+    return s.slice(0, 2) === "0x" && s.length === 42
+  }
+
+  onDismiss() {
+    this.setState({ visible: false });
+   
+  }
+  
+
   render() {
     return (
+    
       <div className="animated fadeIn">
-        <Row>
-          <Col xs="12" sm="6">
-            <Card>
-              <CardHeader>
-                <strong>Credit Card</strong>
-                <small> Form</small>
-              </CardHeader>
-              <CardBody>
-                <Row>
-                  <Col xs="12">
-                    <FormGroup>
-                      <Label htmlFor="name">Name</Label>
-                      <Input type="text" id="name" placeholder="Enter your name" required />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs="12">
-                    <FormGroup>
-                      <Label htmlFor="ccnumber">Credit Card Number</Label>
-                      <Input type="text" id="ccnumber" placeholder="0000 0000 0000 0000" required />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="ccmonth">Month</Label>
-                      <Input type="select" name="ccmonth" id="ccmonth">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="ccyear">Year</Label>
-                      <Input type="select" name="ccyear" id="ccyear">
-                        <option>2017</option>
-                        <option>2018</option>
-                        <option>2019</option>
-                        <option>2020</option>
-                        <option>2021</option>
-                        <option>2022</option>
-                        <option>2023</option>
-                        <option>2024</option>
-                        <option>2025</option>
-                        <option>2026</option>
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="cvv">CVV/CVC</Label>
-                      <Input type="text" id="cvv" placeholder="123" required />
-                    </FormGroup>
-                  </Col>
-                </Row>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" sm="6">
-            <Card>
-              <CardHeader>
-                <strong>Company</strong>
-                <small> Form</small>
-              </CardHeader>
-              <CardBody>
-                <FormGroup>
-                  <Label htmlFor="company">Company</Label>
-                  <Input type="text" id="company" placeholder="Enter your company name" />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="vat">VAT</Label>
-                  <Input type="text" id="vat" placeholder="DE1234567890" />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="street">Street</Label>
-                  <Input type="text" id="street" placeholder="Enter street name" />
-                </FormGroup>
-                <FormGroup row className="my-0">
-                  <Col xs="8">
-                    <FormGroup>
-                      <Label htmlFor="city">City</Label>
-                      <Input type="text" id="city" placeholder="Enter your city" />
-                    </FormGroup>
-                  </Col>
-                  <Col xs="4">
-                    <FormGroup>
-                      <Label htmlFor="postal-code">Postal Code</Label>
-                      <Input type="text" id="postal-code" placeholder="Postal Code" />
-                    </FormGroup>
-                  </Col>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="country">Country</Label>
-                  <Input type="text" id="country" placeholder="Country name" />
-                </FormGroup>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+        <Alert color="success" className="hidden" id="successToastr" isOpen={this.state.visible} toggle={this.onDismiss}>
+                  Operation Successful
+                </Alert>
         <Row>
           <Col xs="12" md="6">
             <Card>
@@ -412,222 +341,30 @@ class Forms extends Component {
             </Card>
             <Card>
               <CardHeader>
-                <strong>Inline</strong> Form
+                Create New Group
               </CardHeader>
               <CardBody>
                 <Form action="" method="post" inline>
                   <FormGroup className="pr-1">
-                    <Label htmlFor="exampleInputName2" className="pr-1">Name</Label>
-                    <Input type="text" id="exampleInputName2" placeholder="Jane Doe" required />
+                    <Label htmlFor="exampleInputName2" className="pr-1">Group Name</Label>
+                    <Input type="text" id="exampleInputName2" placeholder="Trip to Bali" required />
                   </FormGroup>
                   <FormGroup className="pr-1">
-                    <Label htmlFor="exampleInputEmail2" className="pr-1">Email</Label>
-                    <Input type="email" id="exampleInputEmail2" placeholder="jane.doe@example.com" required />
+                    <Label htmlFor="exampleInputEmail2" className="pr-1"> Your Name</Label>
+                    <Input type="text" id="exampleInputEmail2" placeholder="Nakamoto" required />
                   </FormGroup>
                 </Form>
               </CardBody>
               <CardFooter>
-                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                <Button type="submit" size="sm" color="primary" onClick = {() => this.createContract()}><i className="fa fa-dot-circle-o"></i> Submit</Button>
                 <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
               </CardFooter>
             </Card>
           </Col>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
-                <strong>Horizontal</strong> Form
-              </CardHeader>
-              <CardBody>
-                <Form action="" method="post" className="form-horizontal">
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="hf-email">Email</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="email" id="hf-email" name="hf-email" placeholder="Enter Email..." autoComplete="email" />
-                      <FormText className="help-block">Please enter your email</FormText>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="hf-password">Password</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="password" id="hf-password" name="hf-password" placeholder="Enter Password..." autoComplete="current-password"/>
-                      <FormText className="help-block">Please enter your password</FormText>
-                    </Col>
-                  </FormGroup>
-                </Form>
-              </CardBody>
-              <CardFooter>
-                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <strong>Normal</strong> Form
-              </CardHeader>
-              <CardBody>
-                <Form action="" method="post">
-                  <FormGroup>
-                    <Label htmlFor="nf-email">Email</Label>
-                    <Input type="email" id="nf-email" name="nf-email" placeholder="Enter Email.." autoComplete="email"/>
-                    <FormText className="help-block">Please enter your email</FormText>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label htmlFor="nf-password">Password</Label>
-                    <Input type="password" id="nf-password" name="nf-password" placeholder="Enter Password.." autoComplete="current-password"/>
-                    <FormText className="help-block">Please enter your password</FormText>
-                  </FormGroup>
-                </Form>
-              </CardBody>
-              <CardFooter>
-                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                Input <strong>Grid</strong>
-              </CardHeader>
-              <CardBody>
-                <Form action="" method="post" className="form-horizontal">
-                  <FormGroup row>
-                    <Col sm="3">
-                      <Input type="text" placeholder=".col-sm-3" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="4">
-                      <Input type="text" placeholder=".col-sm-4" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="5">
-                      <Input type="text" placeholder=".col-sm-5" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="6">
-                      <Input type="text" placeholder=".col-sm-6" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="7">
-                      <Input type="text" placeholder=".col-sm-7" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="8">
-                      <Input type="text" placeholder=".col-sm-8" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="9">
-                      <Input type="text" placeholder=".col-sm-9" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="10">
-                      <Input type="text" placeholder=".col-sm-10" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="11">
-                      <Input type="text" placeholder=".col-sm-11" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col sm="12">
-                      <Input type="text" placeholder=".col-sm-12" />
-                    </Col>
-                  </FormGroup>
-                </Form>
-              </CardBody>
-              <CardFooter>
-                <Button type="submit" size="sm" color="primary"><i className="fa fa-user"></i> Login</Button>
-                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                Input <strong>Sizes</strong>
-              </CardHeader>
-              <CardBody>
-                <Form action="" method="post" className="form-horizontal">
-                  <FormGroup row>
-                    <Label sm="5" size="sm" htmlFor="input-small">Small Input</Label>
-                    <Col sm="6">
-                      <Input bsSize="sm" type="text" id="input-small" name="input-small" className="input-sm" placeholder=".form-control-sm" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Label sm="5" htmlFor="input-normal">Normal Input</Label>
-                    <Col sm="6">
-                      <Input type="text" id="input-normal" name="input-normal" placeholder="Normal" />
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Label sm="5" size="lg" htmlFor="input-large">Large Input</Label>
-                    <Col sm="6">
-                      <Input bsSize="lg" type="text" id="input-large" name="input-large" className="input-lg" placeholder=".form-control-lg" />
-                    </Col>
-                  </FormGroup>
-                </Form>
-              </CardBody>
-              <CardFooter>
-                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-              </CardFooter>
-            </Card>
-          </Col>
+      
         </Row>
         <Row>
-          <Col xs="12" sm="6">
-            <Card>
-              <CardHeader>
-                <strong>Validation feedback</strong> Form
-              </CardHeader>
-              <CardBody>
-                <FormGroup>
-                  <Label htmlFor="inputIsValid">Input is valid</Label>
-                  <Input type="text" valid id="inputIsValid" />
-                  <FormFeedback valid>Cool! Input is valid</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="inputIsInvalid">Input is invalid</Label>
-                  <Input type="text" invalid id="inputIsInvalid" />
-                  <FormFeedback>Houston, we have a problem...</FormFeedback>
-                </FormGroup>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" sm="6">
-            <Card>
-              <CardHeader>
-                <strong>Validation feedback</strong> Form
-              </CardHeader>
-              <CardBody>
-                <Form className="was-validated">
-                  <FormGroup>
-                    <Label htmlFor="inputSuccess2i">Non-required input</Label>
-                    <Input type="text" className="form-control-success" id="inputSuccess2i" />
-                    <FormFeedback valid>Non-required</FormFeedback>
-                  </FormGroup>
-                  <FormGroup>
-                    <Label htmlFor="inputWarning2i">Required input</Label>
-                    <Input type="text" className="form-control-warning" id="inputWarning2i" required />
-                    <FormFeedback className="help-block">Please provide a valid information</FormFeedback>
-                    <FormFeedback valid className="help-block">Input provided</FormFeedback>
-                  </FormGroup>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="12" md="4">
+            <Col xs="12" md="4">
             <Card>
               <CardHeader>
                 <strong>Icon/Text</strong> Groups
@@ -1034,7 +771,7 @@ class Forms extends Component {
           <Col xs="12" sm="4">
             <Card>
               <CardHeader>
-                Example Form
+                Add User to Group
               </CardHeader>
               <CardBody>
                 <Form action="" method="post">
@@ -1043,7 +780,7 @@ class Forms extends Component {
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText><i className="fa fa-user"></i></InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" id="username1" name="username1" placeholder="Username" autoComplete="name"/>
+                      <Input type="text" id="addUserName" name="username1" placeholder="Vitalik" autoComplete="name"/>
                     </InputGroup>
                   </FormGroup>
                   <FormGroup>
@@ -1051,19 +788,11 @@ class Forms extends Component {
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText><i className="fa fa-envelope"></i></InputGroupText>
                       </InputGroupAddon>
-                      <Input type="email" id="email1" name="email1" placeholder="Email" autoComplete="username"/>
-                    </InputGroup>
-                  </FormGroup>
-                  <FormGroup>
-                    <InputGroup>
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText><i className="fa fa-asterisk"></i></InputGroupText>
-                      </InputGroupAddon>
-                      <Input type="password" id="password1" name="password1" placeholder="Password" autoComplete="current-password"/>
+                      <Input type="text" id="addUserAddress" name="email1" placeholder="0xca35b7d915458ef540ade6068dfe2f44e8fa733c" autoComplete="username"/>
                     </InputGroup>
                   </FormGroup>
                   <FormGroup className="form-actions">
-                    <Button type="submit" size="sm" color="success">Submit</Button>
+                    <Button type="submit" size="sm" color="success" onClick = {() => this.addUser()}>Add User</Button>
                   </FormGroup>
                 </Form>
               </CardBody>
