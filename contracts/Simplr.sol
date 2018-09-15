@@ -177,6 +177,10 @@
 			return users[msg.sender].balance;
 		}
 
+		function getUserAddress () public onlyUser() view returns(address)  {
+			return users[msg.sender].addr;
+		}
+
 		function getContractBalance () public onlyUser() view returns(uint) {
 			return address(this).balance;
 		}
