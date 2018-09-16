@@ -8,19 +8,20 @@ function UserRow(props) {
   const userLink = `#/users/${user.id}`
 
   const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
+    return status === 'Completed' ? 'success' :
       status === 'Inactive' ? 'secondary' :
         status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
+          status === 'Cancelled' ? 'danger' :
             'primary'
   }
 
   return (
     <tr key={user.id.toString()}>
         <th scope="row"><a href={userLink}>{user.id}</a></th>
-        <td><a href={userLink}>{user.name}</a></td>
-        <td>{user.registered}</td>
-        <td>{user.role}</td>
+        <td><a href={userLink}>{user.Title}</a></td>
+        <td>{user.Date}</td>
+        <td>{user.amount}</td>
+        <td>{user.paidTo}</td>
         <td><Badge href={userLink} color={getBadge(user.status)}>{user.status}</Badge></td>
     </tr>
   )
@@ -35,20 +36,21 @@ class Users extends Component {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xl={6}>
+          <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Users <small className="text-muted">example</small>
+                <i className="fa fa-align-justify"></i> Transactions
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
                   <thead>
                     <tr>
-                      <th scope="col">id</th>
-                      <th scope="col">name</th>
-                      <th scope="col">registered</th>
-                      <th scope="col">role</th>
-                      <th scope="col">status</th>
+                      <th scope="col">Id</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Paid to</th>
+                      <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>

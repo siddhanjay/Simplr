@@ -396,9 +396,9 @@ const result =  myToken.call("getContractBalance");
                   </Dropdown>
                 </ButtonGroup>
                 <div className="text-value" id ="userAddress">{this.getUserAddress()}</div>
-                <div className="wrap">Wallet Address</div>
+                <div >Wallet Address</div>
               </CardBody>
-              <div className="chart-wrapper mx-3" style={{ height: '70px' }}>
+              <div className="chart-wrapper mx-3" style={{ height: '40px' }}>
               </div>
             </Card>
           </Col>
@@ -493,7 +493,7 @@ const result =  myToken.call("getContractBalance");
                       <Progress className="progress-xs" color="success" value="50" />
                     </td>
                     <td>
-                      <div className="small text-muted">Last login</div>
+                      <div className="small text-muted">Last Activity</div>
                       <strong>10 days ago</strong>
                     </td>
                   </tr>
@@ -523,7 +523,7 @@ const result =  myToken.call("getContractBalance");
                       <Progress className="progress-xs" color="info" value="10" />
                     </td>
                     <td>
-                      <div className="small text-muted">Last login</div>
+                      <div className="small text-muted">Last Activity</div>
                       <strong>5 minutes ago</strong>
                     </td>
                   </tr>
@@ -549,7 +549,7 @@ const result =  myToken.call("getContractBalance");
                       <Progress className="progress-xs" color="warning" value="34" />
                     </td>
                     <td>
-                      <div className="small text-muted">Last login</div>
+                      <div className="small text-muted">Last Activity</div>
                       <strong>1 hour ago</strong>
                     </td>
                   </tr>
@@ -578,7 +578,7 @@ const result =  myToken.call("getContractBalance");
                       <Progress className="progress-xs" color="info" value="6" />
                     </td>
                     <td>
-                      <div className="small text-muted">Last login</div>
+                      <div className="small text-muted">Last Activity</div>
                       <strong>Last week</strong>
                     </td>
                   </tr>

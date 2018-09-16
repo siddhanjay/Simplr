@@ -17,7 +17,6 @@ import {
   Form,
   FormGroup,
   FormText,
-  FormFeedback,
   Input,
   InputGroup,
   InputGroupAddon,
@@ -41,7 +40,9 @@ class Forms extends Component {
       collapse: true,
       fadeIn: true,
       timeout: 300,
-      visible: true
+      visible: false,
+      color: "success",
+      message: "Transaction created successfully"
     };
   }
 
@@ -53,14 +54,29 @@ class Forms extends Component {
     this.setState((prevState) => { return { fadeIn: !prevState }});
   }
 
+  onDismiss() {
+    this.setState({ visible: false });
+   
+  }
+
   createContract() {
     var gName = document.getElementById('exampleInputName2').value;
     var userName = document.getElementById('exampleInputEmail2').value;
     const result =  myToken.send("createContract", [gName, userName]);
    var promise = Promise.resolve(result);
-    promise.then(function(value) {
-      document.getElementById("successToastr").classList.remove("hidden");
+   this.setState({ visible: true });
+   this.setState({ color : "warning"});
+   this.setState({ message: "Transcation is pending approval.Please verify" });
+   var self_ = this;
+   try {
+   promise.then(function(value) {
+      self_.setState({ color : "success"});
+      self_.setState({ message: "Transaction created successfully" });
     })
+  } catch(e){
+    self_.setState({color: "danger"})
+    self_.setState({ message: e });
+   }
   }
 
   addUser() {
@@ -68,28 +84,108 @@ class Forms extends Component {
     var userAddress = document.getElementById('addUserAddress').value;
     const result = myToken.send("addUser", [userName, userAddress]);
     var promise = Promise.resolve(result);
+    this.setState({ visible: true });
+    this.setState({ color : "warning"});
+    this.setState({ message: "Transcation is pending approval.Please verify" });
+    var self_ = this;
+    try {
+      promise.then(function(value) {
+         self_.setState({ color : "success"});
+         self_.setState({ message: "Transaction created successfully" });
+       })
+     } catch(e){
+       self_.setState({color: "danger"})
+       self_.setState({ message: e });
+      }
+  }
+
+  makePayment() {
+    var title = document.getElementById('paymentTitle').value;
+    var amount = document.getElementById('paymentAmount').value;
+    var addr = document.getElementById('paymentAddress').value;
+    var payees = [];
+    var notes = document.getElementById('paymentNotes').value;
+    const result = myToken.send("makePayment", [title, amount,addr ,payees,notes]);
+    var promise = Promise.resolve(result);
+    this.setState({ visible: true });
+    this.setState({ color : "warning"});
+    this.setState({ message: "Transcation is pending approval.Please verify" });
+    var self_ = this;
+    try {
+      promise.then(function(value) {
+         self_.setState({ color : "success"});
+         self_.setState({ message: "Transaction created successfully" });
+       })
+     } catch(e){
+       self_.setState({color: "danger"})
+       self_.setState({ message: e });
+      }
+  }
+
+  fundContract() {
+    var fundAmount = document.getElementById('fundAmount').value;
+    const result = myToken.send("fundContract", [], {amount : fundAmount});
+    var promise = Promise.resolve(result);
+    this.setState({ visible: true });
+    this.setState({ color : "warning"});
+    this.setState({ message: "Transcation is pending approval.Please verify" });
+    var self_ = this;
+    try {
+      promise.then(function(value) {
+         self_.setState({ color : "success"});
+         self_.setState({ message: "Transaction created successfully" });
+       })
+     } catch(e){
+       self_.setState({color: "danger"})
+       self_.setState({ message: e });
+      }
+  }
+
+  withdrawBalance() {
+    var withdrawAmount = document.getElementById('withdrawAmount').value;
+    const result = myToken.send("withdraw ", [withdrawAmount]);
+    var promise = Promise.resolve(result);
+    this.setState({ visible: true });
+    this.setState({ color : "warning"});
+    this.setState({ message: "Transcation is pending approval.Please verify" });
+    var self_ = this;
+    try {
+      promise.then(function(value) {
+         self_.setState({ color : "success"});
+         self_.setState({ message: "Transaction created successfully" });
+       })
+     } catch(e){
+       self_.setState({color: "danger"})
+       self_.setState({ message: e });
+      }
+  }
+
+  getUserBalance() {
+    const result =  myToken.call("getUserBalance");
+   var promise = Promise.resolve(result);
     promise.then(function(value) {
-      document.getElementById("successToastr").classList.remove("hidden");
+     
+      const supply = value.outputs[0];
+     
+      document.getElementById("userBalance").innerHTML = "out of " + supply.toString() + " available tokens";
     })
+    
   }
 
    ishex160(s) {
     return s.slice(0, 2) === "0x" && s.length === 42
   }
 
-  onDismiss() {
-    this.setState({ visible: false });
-   
-  }
+  
   
 
   render() {
     return (
     
       <div className="animated fadeIn">
-        <Alert color="success" className="hidden" id="successToastr" isOpen={this.state.visible} toggle={this.onDismiss}>
-                  Operation Successful
-                </Alert>
+        <Alert color={this.state.color} id="successToastr"  isOpen={this.state.visible} toggle={this.onDismiss}>
+                  {this.state.message}
+        </Alert>
         <Row>
           <Col xs="12" md="6">
             <Card>
@@ -367,54 +463,51 @@ class Forms extends Component {
             <Col xs="12" md="4">
             <Card>
               <CardHeader>
-                <strong>Icon/Text</strong> Groups
+                <strong>Fund Contract</strong> 
               </CardHeader>
               <CardBody>
                 <Form action="" method="post" className="form-horizontal">
-                  <FormGroup row>
-                    <Col md="12">
-                      <InputGroup>
+                <FormGroup row>
+                <Col md="12">
+                    <InputGroup>
                         <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="fa fa-user"></i>
-                          </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" id="input1-group1" name="input1-group1" placeholder="Username" />
-                      </InputGroup>
-                    </Col>
-                  </FormGroup>
-                  <FormGroup row>
-                    <Col md="12">
-                      <InputGroup>
-                        <Input type="email" id="input2-group1" name="input2-group1" placeholder="Email" />
+                        <Input type="text" id="fundAmount" name="input3-group1" placeholder="Amount" />
                         <InputGroupAddon addonType="append">
-                          <InputGroupText>
-                            <i className="fa fa-envelope-o"></i>
-                          </InputGroupText>
+                          <InputGroupText>Qtum tokens</InputGroupText>
                         </InputGroupAddon>
                       </InputGroup>
-                    </Col>
+                      </Col>
                   </FormGroup>
-                  <FormGroup row>
-                    <Col md="12">
-                      <InputGroup>
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="fa fa-euro"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <Input type="text" id="input3-group1" name="input3-group1" placeholder=".." />
-                        <InputGroupAddon addonType="append">
-                          <InputGroupText>.00</InputGroupText>
-                        </InputGroupAddon>
-                      </InputGroup>
-                    </Col>
-                  </FormGroup>
-                </Form>
+                 </Form>
               </CardBody>
               <CardFooter>
-                <Button type="submit" size="sm" color="success"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+                <Button type="submit" size="sm" color="success" onClick = {() => this.fundContract()}><i className="fa fa-dot-circle-o"></i> Pay </Button>
+              </CardFooter>
+            </Card>
+
+             <Card>
+              <CardHeader>
+                <strong>Withdraw Balance</strong> 
+              </CardHeader>
+              <CardBody>
+                <Form action="" method="post" className="form-horizontal">
+                <FormGroup row>
+                <Col md="12">
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                        </InputGroupAddon>
+                        <Input type="text" id="withdrawAmount" name="input3-group1" placeholder="Amount" />
+                        <InputGroupAddon addonType="append">
+                          <InputGroupText id ="userBalance">{this.getUserBalance()} </InputGroupText>
+                        </InputGroupAddon>
+                      </InputGroup>
+                      </Col>
+                  </FormGroup>
+                 </Form>
+              </CardBody>
+              <CardFooter>
+                <Button type="submit" size="sm" color="success" onClick = {() => this.withdrawBalance()}><i className="fa fa-dot-circle-o"></i> Pay </Button>
               </CardFooter>
             </Card>
           </Col>
@@ -686,45 +779,76 @@ class Forms extends Component {
           <Col xs="12" sm="4">
             <Card>
               <CardHeader>
-                Example Form
+                Make a payment
               </CardHeader>
               <CardBody>
                 <Form action="" method="post">
                   <FormGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
-                        <InputGroupText>Username</InputGroupText>
+                        <InputGroupText>Description</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="email" id="username3" name="username3" autoComplete="name"/>
+                      <Input type="text " id="paymentTitle" name="username3" autoComplete="name" placeholder="Lunch at PastaStop"/>
                       <InputGroupAddon addonType="append">
-                        <InputGroupText><i className="fa fa-user"></i></InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
+                    </FormGroup>
+                    <FormGroup>
+                    <InputGroup>
+                        <InputGroupAddon addonType="prepend">
+                        </InputGroupAddon>
+                        <Input type="text" id="paymentAmount" name="input3-group1" placeholder="Amount" />
+                        <InputGroupAddon addonType="append">
+                          <InputGroupText>Qtum tokens</InputGroupText>
+                        </InputGroupAddon>
+                      </InputGroup>
                   </FormGroup>
                   <FormGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
-                        <InputGroupText>Email</InputGroupText>
+                        <InputGroupText>Payment address</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="email" id="email3" name="email3" autoComplete="username"/>
+                      <Input type="text" id="paymentAddress" name="email3" autoComplete="username"/>
                       <InputGroupAddon addonType="append">
                         <InputGroupText><i className="fa fa-envelope"></i></InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
                   </FormGroup>
+                  <FormGroup row>
+                    <Col md="3"><Label>Split equally among</Label></Col>
+                    <Col md="9">
+                      <FormGroup check className="checkbox">
+                        <Input className="form-check-input" type="checkbox" id="checkbox11" name="checkbox1" value="option1" />
+                        <Label check className="form-check-label" htmlFor="checkbox1">Niharika Gupta  </Label>
+                      </FormGroup>
+                      <FormGroup check className="checkbox">
+                        <Input className="form-check-input" type="checkbox" id="checkbox21" name="checkbox2" value="option2" />
+                        <Label check className="form-check-label" htmlFor="checkbox2">Siddhanjay Godre</Label>
+                      </FormGroup>
+                      <FormGroup check className="checkbox">
+                        <Input className="form-check-input" type="checkbox" id="checkbox31" name="checkbox3" value="option3" />
+                        <Label check className="form-check-label" htmlFor="checkbox3">Vitalik Buterin</Label>
+                      </FormGroup>
+                      <FormGroup check className="checkbox">
+                        <Input className="form-check-input" type="checkbox" id="checkbox41" name="checkbox3" value="option3" />
+                        <Label check className="form-check-label" htmlFor="checkbox3">Satoshi Nakamoto</Label>
+                      </FormGroup>
+                    </Col>
+                  </FormGroup>
                   <FormGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
-                        <InputGroupText>Password</InputGroupText>
+                        <InputGroupText>Additional Notes</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" id="password3" name="password3" autoComplete="current-password"/>
+                      <Input type="text" id="paymentNotes" name="password3" />
                       <InputGroupAddon addonType="append">
                         <InputGroupText><i className="fa fa-asterisk"></i></InputGroupText>
                       </InputGroupAddon>
                     </InputGroup>
                   </FormGroup>
+                  
                   <FormGroup className="form-actions">
-                    <Button type="submit" size="sm" color="primary">Submit</Button>
+                    <Button type="submit" size="sm" color="primary" onClick = {() => this.makePayment()}>Make a Payment</Button>
                   </FormGroup>
                 </Form>
               </CardBody>
@@ -762,7 +886,7 @@ class Forms extends Component {
                     </InputGroup>
                   </FormGroup>
                   <FormGroup className="form-actions">
-                    <Button type="submit" size="sm" color="secondary">Submit</Button>
+                    <Button type="submit" size="sm" color="secondary"  >Submit</Button>
                   </FormGroup>
                 </Form>
               </CardBody>
