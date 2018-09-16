@@ -6,7 +6,7 @@ export default {
       icon: 'icon-speedometer',
     },
     {
-      name: 'Data Insights',
+      name: 'Insights',
       url: '/charts',
       icon: 'icon-chart',
     },
