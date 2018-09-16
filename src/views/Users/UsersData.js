@@ -8,7 +8,7 @@ const usersData = [
   {id: 6, Title: 'House Rental', Date: '2018/01/01', amount: 800 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Pending'},
   {id: 7, Title: 'Utilities', Date: '2018/02/01', amount: 120 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Completed'},
   {id: 8, Title: 'Furniture', Date: '2018/02/01', amount: 140 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Cancelled'},
-  {id: 9, Title: 'Enéas Kwadwo', Date: '2018/03/01', amount: 100 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Pending'},
+  {id: 9, Title: 'AC repair', Date: '2018/03/01', amount: 40 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Pending'},
   {id: 10, Title: 'Agapetus Tadeáš', Date: '2018/01/21', amount: 100 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Active'},
   {id: 11, Title: 'Carwyn Fachtna', Date: '2018/01/01', amount: 100 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Active'},
   {id: 12, Title: 'Nehemiah Tatius', Date: '2018/02/01', amount: 100 ,paidTo:'0x77d1f91334fc72b448ea01bc49a68f1ef16e2742', status: 'Banned'},
