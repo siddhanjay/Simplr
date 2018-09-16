@@ -494,7 +494,7 @@ const result =  myToken.call("getContractBalance");
                     </td>
                     <td>
                       <div className="small text-muted">Last login</div>
-                      <strong>10 sec ago</strong>
+                      <strong>10 days ago</strong>
                     </td>
                   </tr>
                   <tr>
